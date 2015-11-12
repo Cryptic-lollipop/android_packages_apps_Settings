@@ -161,7 +161,7 @@ public class PowerUsageSummary extends PowerUsageBase
             final int[] values = getResources().getIntArray(
                     org.cyanogenmod.platform.internal.R.array.perf_profile_values);
             int i = 0;
-            for (int j = 0; i < values.length; j++) {
+            for (int j = 0; j < values.length; j++) {
                 if (values[j] < mNumPerfProfiles) {
                     mPerfProfileEntries[i] = entries[j];
                     mPerfProfileValues[i] = String.valueOf(values[j]);
@@ -515,7 +515,7 @@ public class PowerUsageSummary extends PowerUsageBase
                     if (percentOfTotal < 10) {
                         continue;
                     }
-                    if ("user".equals(Build.TYPE)) {
+                    if ("user".equals(Build.TYPE) || "userdebug".equals(Build.TYPE) || "eng".equals(Build.TYPE)) {
                         continue;
                     }
                 }
@@ -528,7 +528,7 @@ public class PowerUsageSummary extends PowerUsageBase
                     if (percentOfTotal < 5) {
                         continue;
                     }
-                    if ("user".equals(Build.TYPE)) {
+                    if ("user".equals(Build.TYPE) || "userdebug".equals(Build.TYPE) || "eng".equals(Build.TYPE)) {
                         continue;
                     }
                 }

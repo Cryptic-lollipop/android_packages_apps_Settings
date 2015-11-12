@@ -86,6 +86,12 @@
         android:entries="@array/root_access_entries"
         android:entryValues="@array/root_access_values" />
 
+    <com.android.settings.ColorModePreference
+        android:key="color_mode"
+        android:title="@string/picture_color_mode"
+        android:summary="@string/picture_color_mode_desc"
+        android:persistent="false" />
+
     <PreferenceCategory android:key="debug_debugging_category"
             android:title="@string/debug_debugging_category">
 
@@ -132,6 +138,11 @@
 
         <PreferenceScreen android:key="mock_location_app"
             android:title="@string/mock_location_app" />
+
+        <SwitchPreference
+            android:key="development_shortcut"
+            android:title="@string/development_shortcut_title"
+            android:summary="@string/development_shortcut_summary" />
 
         <SwitchPreference
                 android:key="debug_view_attributes"

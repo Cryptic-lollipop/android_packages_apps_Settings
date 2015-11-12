@@ -28,6 +28,10 @@
     <!-- Launch Dev Tools -->
     <string name="development_tools_title">Development tools</string>
 
+    <!-- Development shortcut -->
+    <string name="development_shortcut_title">Development shortcut</string>
+    <string name="development_shortcut_summary">Enable application management shortcuts in notification area and recent apps list</string>
+
     <!-- Setting checkbox title for root access -->
     <string name="root_access">Root access</string>
     <string name="root_access_warning_title">Allow root access?</string>
@@ -38,7 +42,7 @@
     <string name="root_access_all">Apps and ADB</string>
 
     <!-- About phone screen, CyanogenMod version -->
-    <string name="mod_version">CyanogenMod version</string>
+    <string name="mod_version">cm version</string>
     <string name="mod_version_default">Unknown</string>
 
     <!-- About phone screen, CyanogenMod Api Level -->
@@ -305,6 +309,10 @@
     <string name="notification_light_missed_call_title">Missed call</string>
     <string name="notification_light_voicemail_title">Voicemail</string>
 
+    <!-- Lights settings, LED notification -->
+    <string name="led_notification_title">Light settings</string>
+    <string name="led_notification_text">LED light enabled by settings</string>
+
     <!-- Setting checkbox title for Whether to enable Android debugging support on the phone. -->
     <string name="enable_adb_cm">Android debugging</string>
     <!-- Setting checkbox summary for Whether to enable Android debugging support on the phone -->
@@ -569,10 +577,6 @@
     <string name="increasing_ring_min_volume_title">Start volume</string>
     <string name="increasing_ring_ramp_up_time_title">Ramp-up time</string>
 
-    <!-- Advanced reboot options -->
-    <string name="advanced_reboot_title">Advanced reboot</string>
-    <string name="advanced_reboot_summary">When unlocked, include options in the power menu for rebooting into recovery, bootloader or performing a soft reboot</string>
-
     <!-- LTO download data over wi-fi only -->
     <string name="lto_download_data_wifi_only">GPS assisted data download</string>
     <string name="lto_download_data_wifi_only_on">Over any networks</string>
@@ -618,6 +622,10 @@
     <string name="status_bar_am_pm_small">Small</string>
     <string name="status_bar_am_pm_hidden">Hidden (default)</string>
 
+    <!-- Superuser indicator on status bar -->	
+    <string name="su_indicator">Superuser indicator</string>	
+    <string name="su_indicator_summary">Show superuser indicator on status bar when a session is active</string>
+
     <!-- Status bar - Battery -->
     <string name="status_bar_battery_style_title">Battery status style</string>
     <string name="status_bar_battery_style_icon_portrait">Icon portrait</string>
@@ -631,10 +639,6 @@
     <string name="status_bar_battery_percentage_default">Hidden</string>
     <string name="status_bar_battery_percentage_text_inside">Inside the icon</string>
     <string name="status_bar_battery_percentage_text_next">Next to the icon</string>
-
-    <!-- Superuser indicator on status bar -->	
-    <string name="su_indicator">Superuser indicator</string>	
-    <string name="su_indicator_summary">Show superuser indicator on status bar when a session is active</string>
 
     <!-- EdgeGesture service -->
     <string name="edge_gesture_service_title">Block gesture touch events</string>
@@ -676,4 +680,10 @@
     <string name="autoperf_summary">Automatically choose an appropriate battery mode for various apps</string>
     <string name="perf_profile_title">Battery mode</string>
 
+    <!-- Sound & notification > Sound section: Title for the option defining the default notification ringtone. [CHAR LIMIT=30] -->
+    <string name="notification_ringtone_title_cm">Notification ringtone</string>
+
+    <!-- Advanced reboot options -->
+    <string name="advanced_reboot_title">Advanced reboot</string>
+    <string name="advanced_reboot_summary">When unlocked, include options in the power menu for rebooting into recovery, bootloader or performing a soft reboot</string>
 </resources>

@@ -81,6 +81,7 @@ import com.android.settings.fuelgauge.InactiveApps;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settings.search.Indexable;
 import com.android.settings.widget.SwitchBar;
+import cyanogenmod.providers.CMSettings;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -162,6 +163,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private static final String USB_CONFIGURATION_KEY = "select_usb_configuration";
     private static final String WIFI_LEGACY_DHCP_CLIENT_KEY = "legacy_dhcp_client";
     private static final String MOBILE_DATA_ALWAYS_ON = "mobile_data_always_on";
+    private static final String KEY_COLOR_MODE = "color_mode";
 
     private static final String INACTIVE_APPS_KEY = "inactive_apps";
 
@@ -183,6 +185,8 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private static final String DEVELOPMENT_TOOLS = "development_tools";
 
     private static final String ADVANCED_REBOOT_KEY = "advanced_reboot";
+
+    private static final String DEVELOPMENT_SHORTCUT_KEY = "development_shortcut";
 
     private static final int RESULT_DEBUG_APP = 1000;
     private static final int RESULT_MOCK_LOCATION_APP = 1001;
@@ -271,8 +275,11 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private ListPreference mRootAccess;
     private Object mSelectedRootValue;
     private PreferenceScreen mDevelopmentTools;
+    private ColorModePreference mColorModePreference;
 
     private SwitchPreference mAdvancedReboot;
+
+    private SwitchPreference mDevelopmentShortcut;
 
     private final ArrayList<Preference> mAllPrefs = new ArrayList<Preference>();
 
@@ -351,6 +358,8 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         mAllPrefs.add(mPassword);
         mAdvancedReboot = findAndInitSwitchPref(ADVANCED_REBOOT_KEY);
 
+        mDevelopmentShortcut = findAndInitSwitchPref(DEVELOPMENT_SHORTCUT_KEY);
+
 
         if (!android.os.Process.myUserHandle().equals(UserHandle.OWNER)) {
             disableForUser(mEnableAdb);
@@ -358,6 +367,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
             disableForUser(mEnableTerminal);
             disableForUser(mPassword);
             disableForUser(mAdvancedReboot);
+            disableForUser(mDevelopmentShortcut);
         }
 
         mDebugAppPref = findPreference(DEBUG_APP_KEY);
@@ -444,7 +454,17 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         }
 
         mDevelopmentTools = (PreferenceScreen) findPreference(DEVELOPMENT_TOOLS);
-        mAllPrefs.add(mDevelopmentTools);
+        if (Utils.updatePreferenceToSpecificActivityOrRemove(getActivity(),
+                getPreferenceScreen(), mDevelopmentTools.getKey(), 0)) {
+            mAllPrefs.add(mDevelopmentTools);
+        }
+
+        mColorModePreference = (ColorModePreference) findPreference(KEY_COLOR_MODE);
+        mColorModePreference.updateCurrentAndSupported();
+        if (mColorModePreference.getTransformsCount() < 2) {
+            removePreference(KEY_COLOR_MODE);
+            mColorModePreference = null;
+        }
     }
 
     private ListPreference addListPreference(String prefKey) {
@@ -562,6 +582,19 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
             setPrefsEnabledState(mLastEnabledState);
         }
         mSwitchBar.show();
+
+        if (mColorModePreference != null) {
+            mColorModePreference.startListening();
+            mColorModePreference.updateCurrentAndSupported();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mColorModePreference != null) {
+            mColorModePreference.stopListening();
+        }
     }
 
     @Override
@@ -657,6 +690,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         updateUSBAudioOptions();
         updateRootAccessOptions();
         updateAdvancedRebootOptions();
+        updateDevelopmentShortcutOptions();
     }
 
     private void writeAdvancedRebootOptions() {
@@ -668,6 +702,22 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
     private void updateAdvancedRebootOptions() {
         mAdvancedReboot.setChecked(Settings.Secure.getInt(getActivity().getContentResolver(),
                 Settings.Secure.ADVANCED_REBOOT, 0) != 0);
+    }
+
+    private void resetDevelopmentShortcutOptions() {
+        CMSettings.Secure.putInt(getActivity().getContentResolver(),
+                CMSettings.Secure.DEVELOPMENT_SHORTCUT, 0);
+    }
+
+    private void writeDevelopmentShortcutOptions() {
+        CMSettings.Secure.putInt(getActivity().getContentResolver(),
+                CMSettings.Secure.DEVELOPMENT_SHORTCUT,
+                mDevelopmentShortcut.isChecked() ? 1 : 0);
+    }
+
+    private void updateDevelopmentShortcutOptions() {
+        mAdvancedReboot.setChecked(CMSettings.Secure.getInt(getActivity().getContentResolver(),
+                CMSettings.Secure.DEVELOPMENT_SHORTCUT, 0) != 0);
     }
 
     private void updateAdbOverNetwork() {
@@ -710,6 +760,7 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
         resetDebuggerOptions();
         writeLogdSizeOption(null);
         resetRootAccessOptions();
+        resetDevelopmentShortcutOptions();
         writeAnimationScaleOption(0, mWindowAnimationScale, null);
         writeAnimationScaleOption(1, mTransitionAnimationScale, null);
         writeAnimationScaleOption(2, mAnimatorDurationScale, null);
@@ -1866,10 +1917,12 @@ public class DevelopmentSettings extends SettingsPreferenceFragment
             writeMobileDataAlwaysOnOptions();
         } else if (preference == mUSBAudio) {
             writeUSBAudioOptions();
-        } else if (INACTIVE_APPS_KEY.equals(preference.getKey())) {
-            startInactiveAppsFragment();
         } else if (preference == mAdvancedReboot) {
             writeAdvancedRebootOptions();
+        } else if (INACTIVE_APPS_KEY.equals(preference.getKey())) {
+            startInactiveAppsFragment();
+        } else if (preference == mDevelopmentShortcut) {
+            writeDevelopmentShortcutOptions();
         } else {
             return super.onPreferenceTreeClick(preferenceScreen, preference);
         }
