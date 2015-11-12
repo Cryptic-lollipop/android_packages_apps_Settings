@@ -686,4 +686,12 @@
     <!-- Advanced reboot options -->
     <string name="advanced_reboot_title">Advanced reboot</string>
     <string name="advanced_reboot_summary">When unlocked, include options in the power menu for rebooting into recovery, bootloader or performing a soft reboot</string>
+
+    <!-- Weather in status bar -->
+    <string name="status_bar_show_weather_title">Show weather</string>
+    <string name="status_bar_show_weather_summary">Show the weather in the status bar header</string>
+
+    <!-- Show/Hide Search Bar -->
+    <string name="recents_show_searchbar">Show search bar in recents menu</string>
+    <string name="keywords_recents_show_searchbar">recent recents disable enable show hide search bar searchbar</string>
 </resources>
